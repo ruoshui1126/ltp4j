@@ -1,8 +1,7 @@
 cmake_minimum_required (VERSION 2.8.0)
 project ("ltp4j")
 
-include_directories (./ltp/include
-./ltp/src/_split_sentence
+include_directories (${PROJECT_SOURCE_DIR}/include
 $ENV{JAVA_HOME}/include)
 
 if(WIN32)
@@ -11,7 +10,7 @@ else(WIN32)
 include_directories ($ENV{JAVA_HOME}/include/linux)
 endif(WIN32)
 
-link_directories (./libs)
+link_directories (${PROJECT_SOURCE_DIR}/libs)
 
 set (LIBRARY_OUTPUT_PATH    ${PROJECT_SOURCE_DIR}/libs)
 

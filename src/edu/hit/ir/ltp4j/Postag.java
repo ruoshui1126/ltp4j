@@ -8,6 +8,7 @@ public class Postag {
 	}
 
 	public static native int create(String modelPath);
+	public static native int create(String modelPath, String lexiconPath);
 	public static native int postag(List<String> words,
 			List<String> tags);
 	public static native void release();

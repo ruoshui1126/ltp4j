@@ -7,7 +7,7 @@
 
 static void * postagger = NULL;
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2
 (JNIEnv * env, jclass obj, jstring model_path){
   const char * str = env->GetStringUTFChars( model_path , 0);
   if(!postagger){
@@ -23,6 +23,26 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create
   }
   return -1;
 }
+
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2Ljava_lang_String_2
+(JNIEnv * env, jclass obj, jstring model_path, jstring lexicon_path){
+  const char * model = env->GetStringUTFChars( model_path , 0);
+  const char * lexicon = env->GetStringUTFChars( model_path , 0);
+  if(!postagger){
+    postagger = postagger_create_postagger(model,lexicon);
+  }
+  else {
+    postagger_release_postagger(postagger);
+    postagger = postagger_create_postagger(model,lexicon);
+  }
+  env->ReleaseStringUTFChars( model_path, model); 
+  env->ReleaseStringUTFChars( lexicon_path, lexicon); 
+  if(postagger) {
+    return 1;
+  }
+  return -1;
+}
+
 
 JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_postag
 (JNIEnv * env, jclass, jobject array_words, jobject array_postags){
