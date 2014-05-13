@@ -1,7 +1,7 @@
 package edu.hit.ir.ltp4j;
 import java.util.List;
 
-public class Ner {
+public class NER {
 
 	static {
 		System.loadLibrary("ner_jni");

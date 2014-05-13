@@ -2,7 +2,7 @@ package edu.hit.ir.ltp4j;
 import java.util.List;
 
 
-public class Postag {
+public class Postagger {
 	static {
 		System.loadLibrary("postagger_jni");
 	}

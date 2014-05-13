@@ -7,7 +7,7 @@ LTP for Java编程接口v1.0
 
 # 分词接口
 
-edu.ir.hit.ltp4j.Segment
+edu.ir.hit.ltp4j.Segmentor
 
 分词主要提供四个接口：
 
@@ -85,7 +85,7 @@ edu.ir.hit.ltp4j.Segment
     public class TestSegment {
 
     public static void main(String[] args) {
-      if(Segment.create("../../../ltp_data/cws.model")<0){
+      if(Segmentor.create("../../../ltp_data/cws.model")<0){
        System.err.println("load failed");
        return;
      }      
@@ -93,7 +93,7 @@ edu.ir.hit.ltp4j.Segment
      String sent = "我是中国人";
      List<String> words = new ArrayList<String>();
 
-    int size = Segment.Segment(sent,words);
+    int size = Segmentor.Segment(sent,words);
 
      for(int i = 0;i<size;i++) {
        System.out.print(words.get(i));
@@ -105,14 +105,14 @@ edu.ir.hit.ltp4j.Segment
      }      
      }      
 
-      Segment.release();
+      Segmentor.release();
     }      
 
     }
 
 
 # 词性标注接口
-edu.ir.hit.ltp4j.Postag
+edu.ir.hit.ltp4j.Postagger
 
 词性标注主要提供三个接口
 
@@ -172,7 +172,7 @@ edu.ir.hit.ltp4j.Postag
     public class TestPostag {
 
     public static void main(String[] args) {
-     if(Postag.create("../../../ltp_data/pos.model")<0) {
+     if(Postagger.create("../../../ltp_data/pos.model")<0) {
       System.err.println("load failed");
       return;
       }
@@ -183,7 +183,7 @@ edu.ir.hit.ltp4j.Postag
      words.add("人");
      List<String> postags= new ArrayList<String>();
 
-     int size = Postag.Postag(words,postags);
+     int size = Postagger.Postag(words,postags);
      for(int i = 0;i<size;i++) {
      System.out.print(words.get(i)+"_"+postags.get(i));
       if(i==size-1) {
@@ -194,14 +194,14 @@ edu.ir.hit.ltp4j.Postag
       }
       }
 
-      Postag.release();
+      Postagger.release();
       }
 
     }
 
 # 命名实体识别接口
 
-edu.ir.hit.ltp4j.Ner
+edu.ir.hit.ltp4j.NER
 
 命名实体识别主要提供三个接口：
 
@@ -257,7 +257,7 @@ edu.ir.hit.ltp4j.Ner
     public class TestNer {
 
      public static void main(String[] args) {
-      if(Ner.nercreate("../../../ltp_data/ner.model")<0) {
+      if(NER.nercreate("../../../ltp_data/ner.model")<0) {
        System.err.println("load failed");
         return;          
       }          
@@ -275,13 +275,13 @@ edu.ir.hit.ltp4j.Ner
        words.add("3日");tags.add("m");
        words.add("。");tags.add("wp");
 
-       Ner.recognize(words, tags, ners);
+       NER.recognize(words, tags, ners);
 
       for (int i = 0; i < words.size(); i++) {
         System.out.println(ners.get(i));
        }          
 
-      Ner.release();
+      NER.release();
 
      }
      }
@@ -380,7 +380,7 @@ edu.ir.hit.ltp4j.Parser
 **注意，对于一个包含N个词的句子，句法分析返回的父节点返回在0至N之间，而语义角色标注的输入需要在-1至N-1之间。因此，若要在句法分析后进行语义角色标注，需要把heads作减一操作**
 
 # 语义角色标注接口
-edu.ir.hit.ltp4j.Srl
+edu.ir.hit.ltp4j.SRL
 依存句法分析主要提供三个接口：
 
 **int create**
@@ -440,7 +440,7 @@ edu.ir.hit.ltp4j.Srl
 
     public class Srl {
       public static void main(String[] args) {
-        Srl.create("../../../ltp_data/srl");
+        SRL.create("../../../ltp_data/srl");
         ArrayList<String> words = new ArrayList<String>();
         words.add("一把手");
         words.add("亲自");
@@ -467,14 +467,14 @@ edu.ir.hit.ltp4j.Srl
         deprels.add("HED");
         deprels.add("WP");
         List<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>> srls = new ArrayList<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>>();
-        Srl.srl(words, tags, ners, heads, deprels, srls);
+        SRL.srl(words, tags, ners, heads, deprels, srls);
         for (int i = 0; i < srls.size(); ++i) {
           System.out.println(srls.get(i).first + ":");
             for (int j = 0; j < srls.get(i).second.size(); ++j) {
               System.out.println("   tpye = "+ srls.get(i).second.get(j).first + " beg = "+ srls.get(i).second.get(j).second.first + " end = "+ srls.get(i).second.get(j).second.second);
             }
         }
-        Srl.release();
+        SRL.release();
       }
 
     }

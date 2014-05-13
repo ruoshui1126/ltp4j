@@ -1,13 +1,13 @@
-#include "edu_hit_ir_ltp4j_Postag.h"
+#include "edu_hit_ir_ltp4j_Postagger.h"
 #include <vector>
 #include <string>
-#include "postag_dll.h"
+#include "ltp/postag_dll.h"
 #include <iostream>
 #include "string_to_jstring.hpp"
 
 static void * postagger = NULL;
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postagger_create__Ljava_lang_String_2
 (JNIEnv * env, jclass obj, jstring model_path){
   const char * str = env->GetStringUTFChars( model_path , 0);
   if(!postagger){
@@ -24,7 +24,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2
   return -1;
 }
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2Ljava_lang_String_2
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postagger_create__Ljava_lang_String_2Ljava_lang_String_2
 (JNIEnv * env, jclass obj, jstring model_path, jstring lexicon_path){
   const char * model = env->GetStringUTFChars( model_path , 0);
   const char * lexicon = env->GetStringUTFChars( model_path , 0);
@@ -44,7 +44,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_create__Ljava_lang_String_2L
 }
 
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_postag
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postagger_postag
 (JNIEnv * env, jclass, jobject array_words, jobject array_postags){
   jclass array_list = env->GetObjectClass(array_words);
 
@@ -75,7 +75,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Postag_postag
   return len;
 }
 
-JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Postag_release
+JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Postagger_release
 (JNIEnv * env, jclass obj){
 	postagger_release_postagger(postagger);
 	postagger = NULL;

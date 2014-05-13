@@ -1,5 +1,5 @@
 #include "edu_hit_ir_ltp4j_SplitSentence.h"
-#include "SplitSentence.h"
+#include "ltp/SplitSentence.h"
 #include "string_to_jstring.hpp"
 #include <string>
 #include <iostream>

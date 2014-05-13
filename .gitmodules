@@ -1,4 +1,0 @@
-[submodule "ltp"]
-	path = ltp
-	url = https://github.com/HIT-SCIR/ltp
-	branch = ltp-unittest

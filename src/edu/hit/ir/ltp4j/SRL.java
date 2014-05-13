@@ -1,7 +1,7 @@
 package edu.hit.ir.ltp4j;
 import java.util.List;
 
-public class Srl {
+public class SRL {
 
 	static {
 		System.loadLibrary("srl_jni");

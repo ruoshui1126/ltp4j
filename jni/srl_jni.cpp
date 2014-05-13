@@ -1,11 +1,11 @@
-#include "edu_hit_ir_ltp4j_Srl.h"
+#include "edu_hit_ir_ltp4j_SRL.h"
 #include "ltp/SRL_DLL.h"
 #include "string_to_jstring.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Srl_create
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_SRL_create
 (JNIEnv * env, jclass obj, jstring model_path){
   const char * str = env->GetStringUTFChars( model_path , 0);
   std::string path(str);
@@ -17,7 +17,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Srl_create
   return -1;
 }
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Srl_srl
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_SRL_srl
 (JNIEnv * env, jclass obj, jobject array_words, jobject array_tags, jobject array_ners, jobject array_heads, jobject array_deprels, jobject srl_result){
 	
   jclass array_list = env->GetObjectClass(array_words);
@@ -116,7 +116,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Srl_srl
   return srls.size();
 }
 
-JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Srl_release
+JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_SRL_release
 (JNIEnv * env, jclass obj){
 	SRL_ReleaseResource();
 }

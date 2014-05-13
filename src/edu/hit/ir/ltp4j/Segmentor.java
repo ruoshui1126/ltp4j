@@ -2,7 +2,7 @@ package edu.hit.ir.ltp4j;
 import java.util.List;
 
 
-public class Segment {
+public class Segmentor {
 	static{
 		System.loadLibrary("segmentor_jni");
 	}

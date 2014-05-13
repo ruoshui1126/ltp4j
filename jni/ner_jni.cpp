@@ -1,44 +1,45 @@
-#include "edu_hit_ir_ltp4j_Parser.h"
-#include "parser_dll.h"
-#include "string_to_jstring.hpp"
-#include <vector>
+#include "edu_hit_ir_ltp4j_NER.h"
 #include <string>
-#include <iostream>
+#include <vector>
+#include "ltp/ner_dll.h"
+#include "string_to_jstring.hpp"
 
-static void * parser = NULL;
+static void * ner = NULL;
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Parser_create
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_NER_create
 (JNIEnv * env, jclass obj, jstring model_path){
   const char * str = env->GetStringUTFChars( model_path , 0);
-  if(!parser){
-    parser = parser_create_parser(str);
+  if(!ner){
+    ner = ner_create_recognizer(str);
+  }
+  else{
+    ner_release_recognizer(ner);
+    ner = ner_create_recognizer(str);
   }
   env->ReleaseStringUTFChars( model_path, str); 
-  if(parser) {
+  if(ner) {
     return 1;
   }
   return -1;
 }
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Parser_parse
-(JNIEnv * env, jclass obj, jobject  array_words, jobject  array_tags, jobject  array_heads, jobject  array_deprels){
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_NER_recognize
+(JNIEnv * env, jclass obj, jobject array_words, jobject array_tags, jobject array_ners){
 
   jclass array_list = env->GetObjectClass(array_words);
-  jclass integer = env->FindClass("java/lang/Integer");
 
   jmethodID list_add = env->GetMethodID(array_list,"add","(Ljava/lang/Object;)Z");
   jmethodID list_get = env->GetMethodID(array_list,"get","(I)Ljava/lang/Object;");
   jmethodID list_size = env->GetMethodID(array_list,"size","()I");
-  jmethodID integer_init =env->GetMethodID(integer,"<init>","(I)V");
 
-  std::vector<std::string> words,tags,deprels;
-  std::vector<int> heads;
+  std::vector<std::string> words,tags,ners;
 
   int size_words = env->CallIntMethod(array_words,list_size);
+
   int size_tags = env->CallIntMethod(array_tags,list_size);
 
-  if(size_words!=size_tags) {
-    return -1;
+  if(size_words!=size_tags){
+    return 0;
   }
 
   for(int i = 0;i<size_words;i++){
@@ -59,31 +60,19 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Parser_parse
     env->ReleaseStringUTFChars( s, st); 
   }
 
-  int len = parser_parse(parser,words,tags,heads,deprels);
-  if(len<0)
-  {
-    return -1;
-  }
+  int len = ner_recognize(ner,words,tags,ners);
 
-  int size = heads.size();
-  for(int i = 0;i<size;i++){
-    jobject integer_object = env->NewObject(integer,integer_init,heads.at(i));
-    env->CallBooleanMethod(array_heads,list_add, integer_object);
+  for(int i = 0;i<len;i++){
+    jobject tmp =  stringToJstring(env,ners[i].c_str());
+    env->CallBooleanMethod(array_ners,list_add,tmp);
   }
-
-  for(int i = 0;i<size;i++){
-    jobject tmp =  stringToJstring(env,deprels[i].c_str());
-    env->CallBooleanMethod(array_deprels,list_add,tmp);
-  }
-
   return len;
 }
 
-JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Parser_release
+JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_NER_release
 (JNIEnv * env, jclass obj){
-	parser_release_parser(parser);
-	parser = NULL;
+  ner_release_recognizer(ner);
+  ner = NULL;
 }
-
 
 

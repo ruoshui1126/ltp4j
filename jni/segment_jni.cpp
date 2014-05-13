@@ -1,8 +1,8 @@
 // segmentor_jni.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "segment_dll.h"
-#include "edu_hit_ir_ltp4j_Segment.h"
+#include "ltp/segment_dll.h"
+#include "edu_hit_ir_ltp4j_Segmentor.h"
 #include "string_to_jstring.hpp"
 #include <iostream>
 #include <string>
@@ -12,7 +12,7 @@ using namespace std;
 
 static void * segmentor = NULL;
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_create__Ljava_lang_String_2
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segmentor_create__Ljava_lang_String_2
 (JNIEnv * env, jclass obj, jstring model_path){
   const char * str = env->GetStringUTFChars( model_path , 0);
   if(!segmentor){
@@ -29,7 +29,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_create__Ljava_lang_String_2
   return -1;
 }
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_create__Ljava_lang_String_2Ljava_lang_String_2
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segmentor_create__Ljava_lang_String_2Ljava_lang_String_2
 (JNIEnv * env, jclass obj, jstring model_path, jstring lexicon_path){
   const char * str_model = env->GetStringUTFChars( model_path , 0);
   const char * str_lexicon = env->GetStringUTFChars( lexicon_path , 0);
@@ -48,7 +48,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_create__Ljava_lang_String_2
   return -1;
 }
 
-JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_segment
+JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segmentor_segment
 (JNIEnv * env, jclass obj, jstring sent, jobject array_words){
   jclass array_list = env->GetObjectClass(array_words);
 
@@ -67,7 +67,7 @@ JNIEXPORT jint JNICALL Java_edu_hit_ir_ltp4j_Segment_segment
   return len;
 }
 
-JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Segment_release
+JNIEXPORT void JNICALL Java_edu_hit_ir_ltp4j_Segmentor_release
 (JNIEnv * env, jclass obj){
   segmentor_release_segmentor(segmentor);
   segmentor = NULL;
