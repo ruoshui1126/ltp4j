@@ -15,12 +15,12 @@ ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目�
 
     ant
 
-命令直接编译。 编译成功后，将在build/jar下产生名为LTPNative.jar的jar文件。
+命令直接编译。 编译成功后，将在build_jar/jar下产生名为ltp4j.jar的jar文件。
 
 
-如果使用Eclipse，可以按照"File > New > Project... > Java Project from Existing Ant Buildfile"的方式从build.xml中创建项目。 选择next后，在Ant buildfile:一栏中填入build.xml的路径。 这里假设项目路径为E:\work\projects\ltp4j。 build.xml的路径就是E:\work\projects\ltp4j\build.xml。
+如果使用Eclipse，可以按照"File > New > Project... > Java Project from Existing Ant Buildfile"的方式从build.xml中创建项目。 选择next后，在Ant buildfile:一栏中填入build.xml的路径。 这里假设项目路径为E:\work\projects\ltp4j。 build.xml的路径就是E:\JAVA\ltp4j\build.xml。
 
-![Eclipse](http://ir.hit.edu.cn/~yjliu/image/2013-7-12-cmake-win-setup.png)
+![Eclipse](https://github.com/ruoshui1126/ltp4j/blob/master/doc/java.png)
 
 点击Finish就导入了项目。
 
@@ -44,7 +44,7 @@ LTP使用编译工具CMake构建项目。在安装LTP之前，你需要首先安
 
 在项目文件夹下新建一个名为build的文件夹，使用CMake Gui，在source code中填入项目文件夹，在binaries中填入build文件夹。然后Configure -> Generate。
 
-![win-cmake](http://ir.hit.edu.cn/~yjliu/image/2013-7-12-cmake-win-setup.png)
+![win-cmake](https://github.com/ruoshui1126/ltp4j/blob/master/doc/cmake.png)
 
 或者在命令行build 路径下运行
 
