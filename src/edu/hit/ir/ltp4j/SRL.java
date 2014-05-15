@@ -1,18 +1,10 @@
 package edu.hit.ir.ltp4j;
 import java.util.List;
-import java.io.IOException;
 
 public class SRL {
 
 	static {
-                try {
-                        NativeUtils.loadLibraryFromJar("/libs/libutil.so");
-                        NativeUtils.loadLibraryFromJar("/libs/libmaxent.so");
-                        NativeUtils.loadLibraryFromJar("/libs/libsrl.so");
-                        NativeUtils.loadLibraryFromJar("/libs/libsrl_jni.so");
-                } catch (IOException e) {
-                        e.printStackTrace(); // This is probably not the best way to handle exception :-)        
-                }
+		System.loadLibrary("srl_jni");
         }
 	public static native int create(String modelPath);
 

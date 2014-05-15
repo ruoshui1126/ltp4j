@@ -16,7 +16,11 @@ else(WIN32)
     include_directories ($ENV{JAVA_HOME}/include/linux)
 endif(WIN32)
 
-link_directories (${LTP_HOME}/lib)
+if(WIN32)
+    link_directories (${LTP_HOME}/lib/Debug)
+else(WIN32)
+    link_directories (${LTP_HOME}/lib)
+endif(WIN32)
 
 add_library (split_sentence_jni SHARED
 ${JNI_SOURCE_DIR}/split_sentence_jni.cpp)
