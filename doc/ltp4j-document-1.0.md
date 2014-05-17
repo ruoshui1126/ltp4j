@@ -7,15 +7,9 @@ ltp4j是[语言技术平台(Language Technology Platform, LTP)](https://github.c
 ### 作者
 * 韩冰 << bhan@ir.hit.edu.cn >> 2014-05-15 创建文档
 
-# 简介
+# 简介与背景知识
 ltp4j是[语言技术平台(Language Technology Platform, LTP)](https://github.com/HIT-SCIR/ltp)接口的一个Java封装。
-本项目旨在使Java用户可以调用本地使用LTP。
-ltp4j主要依靠JNI实现。整个项目由两部分组成，他们分别是：
-
-* __ltp4j.jar__：Java接口程序，利用ant能够直接编译构建为ltp4j.jar，方便用户导入使用。
-* C++代理程序，在项目/jni/目录下实现Java接口中的功能，利用CMake编译构建为动态库。
-
-# 背景知识
+本项目旨在使Java用户可以本地调用LTP。
 
 在使用ltp4j之前，您需要简要了解
 * [什么是语言技术平台](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md#%E7%AE%80%E4%BB%8B)，它能否帮助您解决问题
@@ -25,13 +19,21 @@ ltp4j主要依靠JNI实现。整个项目由两部分组成，他们分别是：
 如果您对这些问题不了解，请首先阅读我们提供的有关语言技术平台的文档。
 在本文档的后续中，我们假定您已经阅读并成功编译并使用语言技术平台。
 
+ltp4j主要依靠JNI实现。整个项目由两部分组成，他们分别是：
+
+* __ltp4j.jar__：Java接口程序，利用ant能够直接编译构建为ltp4j.jar，方便用户导入使用。
+* C++代理程序，在项目/jni/目录下实现Java接口中的功能，利用CMake编译构建为动态库。
+
 # 安装
+
+在这一章节中，我们假定您下载并将LTP放置于`/path/to/your/ltp-project`路径下；
+而ltp4j放置于`/path/to/your/ltp4j-project`路径下。
 
 ## 编译ltp4j.jar
 
 ### 命令行方式
 
-ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目根目录下使用
+ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目根目录(`/path/to/your/ltp4j-project`)下使用
 
 ```
 ant
@@ -40,15 +42,14 @@ ant
 
 ### Eclipse
 
-如果使用Eclipse，可以按照_"File > New > Project... > Java Project from Existing Ant Buildfile"_的方式从build.xml中创建项目。 选择next后，在Ant buildfile:一栏中
-填入build.xml的路径。 这里假设项目路径为F:\JNI\ltp4j, build.xml的路径就是E:\JNI\ltp4j\build.xml。
-
+如果使用Eclipse，可以按照_"File > New > Project... > Java Project from Existing Ant Buildfile"_的方式从build.xml中创建项目。 
+选择next后，在Ant buildfile:一栏中填入build.xml的路径，`/path/to/your/ltp4j-project/build.xml`（window用户请添加盘符并将/改为\\)，如下图所示。
 
 ![Eclipse](https://raw.githubusercontent.com/ruoshui1126/ltp4j/master/doc/java.png)
 
 点击Finish就导入了项目。
 
-在导入项目后，右键build.xml选择2 Ant Build。 在弹出的对话框中的选择main选项卡，并在Base Directory:中填入项目路径。 在本例子里，需要填入E:\JAVA\ltp4j。
+在导入项目后，右键build.xml选择2 Ant Build。 在弹出的对话框中的选择main选项卡，并在`Base Directory:`中填入项目路径`/path/to/your/ltp4j-project/`。
 
 ![BaseDirectory](https://raw.githubusercontent.com/ruoshui1126/ltp4j/master/doc/BaseDirectory.png)
 
@@ -56,19 +57,23 @@ ant
 
 ## 编译C++代理程序
 
-代理程序jni动态库依赖于ltp的动态库，所以在编译jni之前必须在本地安装了ltp，[LTP使用文档v3.0](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md)详细介绍了ltp。
-如果你之前对ltp不太了解，建议通篇阅读一下，如果对ltp比较熟悉，可以直接看“开始使用LTP”部分来安装ltp。
+代理程序jni动态库依赖于ltp的动态库，请先行编译LTP。
 
 ### 安装CMake
-jni程序使用编译工具CMake构建项目。在安装jni之前，你需要首先安装CMake。CMake的网站在[这里](http://www.cmake.org)。如果你是Windows用户，请下载CMake的二进制安装包；
+ltp4j使用的C++代理程序使用编译工具CMake构建项目。
+在编译代理程序之前，你需要首先安装CMake。
+CMake的网站在[这里](http://www.cmake.org)。如果你是Windows用户，请下载CMake的二进制安装包；
 如果你是Linux，Mac OS或Cygwin的用户，可以通过编译源码的方式安装CMake，当然，你也可以使用Linux的软件源来安装。
-
 
 ### Windows(MSVC)编译
 
 第一步：配置ltp的安装路径
 
-因为jni依赖于ltp，所以在编译过程中需要知道ltp的路径。修改项目根目录下的CMakeLists.txt，把其中的set (LTP_HOME "/home/yijialiu/work/ltp/")后面的路径改成你的ltp的安装路即可。
+因为jni依赖于ltp编译产生的动态库，所以在编译过程中需要给出ltp的路径。
+请修改`/path/to/your/ltp4j-project/CMakeLists.txt`中的`LTP_HOME`的值为您的LTP项目的路径(`/path/to/your/ltp-project`)，
+对应修改的代码为：
+
+```set (LTP_HOME "/path/to/your/ltp-project/")```
 
 第二步：构建VC Project
 
@@ -193,39 +198,34 @@ edu.ir.hit.ltp4j.Segmentor
 
 一个简单的实例程序可以说明分词接口的用法：
 
-    import java.util.ArrayList;
-    import java.util.List;
-    import edu.hit.ir.ltp4j.*;
+```
+import java.util.ArrayList;
+import java.util.List;
+import edu.hit.ir.ltp4j.*;
 
+public class TestSegment {
+  public static void main(String[] args) {
+    if(Segmentor.create("../../../ltp_data/cws.model")<0){
+      System.err.println("load failed");
+      return;
+    }
 
-    public class TestSegment {
-
-    public static void main(String[] args) {
-      if(Segmentor.create("../../../ltp_data/cws.model")<0){
-       System.err.println("load failed");
-       return;
-     }
-
-     String sent = "我是中国人";
-     List<String> words = new ArrayList<String>();
-
+    String sent = "我是中国人";
+    List<String> words = new ArrayList<String>();
     int size = Segmentor.Segment(sent,words);
 
-     for(int i = 0;i<size;i++) {
-       System.out.print(words.get(i));
+    for(int i = 0; i<size; i++) {
+      System.out.print(words.get(i));
       if(i==size-1) {
-       System.out.println();
+        System.out.println();
+      } else{  
+        System.out.print("\t");
       }
-      else{  
-       System.out.print("      ");
-     }
-     }
-
-      Segmentor.release();
     }
-
-    }
-
+    Segmentor.release();
+  }
+}
+```
 
 ## 词性标注接口
 edu.ir.hit.ltp4j.Postagger
@@ -279,41 +279,37 @@ edu.ir.hit.ltp4j.Postagger
 
 一个简单的实例程序可以说明词性标注接口的用法：
 
-    import java.util.ArrayList;
-    import java.util.ArrayList;
-    import java.util.List;
-    import edu.hit.ir.ltp4j.*;
+```
+import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
+import edu.hit.ir.ltp4j.*;
 
-
-    public class TestPostag {
-
-    public static void main(String[] args) {
-     if(Postagger.create("../../../ltp_data/pos.model")<0) {
+public class TestPostag {
+  public static void main(String[] args) {
+    if(Postagger.create("../../../ltp_data/pos.model")<0) {
       System.err.println("load failed");
       return;
-      }
-      List<String> words= new ArrayList<String>();
-     words.add("我");
-     words.add("是");
-     words.add("中国");
-     words.add("人");
-     List<String> postags= new ArrayList<String>();
+    }
+    
+    List<String> words= new ArrayList<String>();
+    words.add("我");   words.add("是");
+    words.add("中国"); words.add("人");
+    List<String> postags= new ArrayList<String>();
 
-     int size = Postagger.Postag(words,postags);
-     for(int i = 0;i<size;i++) {
-     System.out.print(words.get(i)+"_"+postags.get(i));
+    int size = Postagger.Postag(words,postags);
+    for(int i = 0; i < size; i++) {
+      System.out.print(words.get(i)+"_"+postags.get(i));
       if(i==size-1) {
         System.out.println();
-     }
-     else{
-      System.out.print("|");
+      } else {
+        System.out.print("|");
       }
-      }
-
-      Postagger.release();
-      }
-
     }
+    Postagger.release();
+  }
+}
+```
 
 ## 命名实体识别接口
 
