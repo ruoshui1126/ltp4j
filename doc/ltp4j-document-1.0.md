@@ -32,7 +32,7 @@ ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目�
 
 ![BaseDirectory](https://raw.githubusercontent.com/ruoshui1126/ltp4j/master/doc/BaseDirectory.png)
 
-填好后执行run，build/jar下产生名为LTPService.jar的jar文件。
+填好后执行run，build/jar下产生名为ltp4j.jar的jar文件。
 
 ##编译C++代理程序
 
