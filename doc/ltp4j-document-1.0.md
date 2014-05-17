@@ -1,26 +1,46 @@
-LTP for Java编程接口v1.0
+ltp4j 文档
 ===============
 
-下面的文档将介绍使用LTP编译产生的静态链接库编写程序的方法。
+ltp4j是[语言技术平台(Language Technology Platform, LTP)](https://github.com/HIT-SCIR/ltp)的Java封装。
+关于LTP更多的信息，欢迎访问LTP项目主页。
 
-(注：2.30以后，LTP的所有模型文件均使用UTF8编码训练，故请确保待分析文本的编码为UTF8格式)
+### 作者
+* 韩冰 << bhan@ir.hit.edu.cn >> 2014-05-15 创建文档
 
-#简介
-ltp4j是对[LTP(Language Technology Platform)](https://github.com/ruoshui1126/ltp)接口的一个Java封装，方便Java用户在本地使用ltp。利用JNI技术实现。
-ltp4j项目由两部分组成
-* Java接口程序，利用ant能够直接编译构建为ltp4j.jar，方便用户导入使用。
+# 简介
+ltp4j是[语言技术平台(Language Technology Platform, LTP)](https://github.com/HIT-SCIR/ltp)接口的一个Java封装。
+本项目旨在使Java用户可以调用本地使用LTP。
+ltp4j主要依靠JNI实现。整个项目由两部分组成，他们分别是：
+
+* __ltp4j.jar__：Java接口程序，利用ant能够直接编译构建为ltp4j.jar，方便用户导入使用。
 * C++代理程序，在项目/jni/目录下实现Java接口中的功能，利用CMake编译构建为动态库。
 
-#如何安装ltp4j
+# 背景知识
 
-##编译Java接口程序
+在使用ltp4j之前，您需要简要了解
+* [什么是语言技术平台](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md#%E7%AE%80%E4%BB%8B)，它能否帮助您解决问题
+* [如何安装语言技术平台](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md#%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85ltp)
+* [语言技术平台提供哪些编程接口](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3)
+
+如果您对这些问题不了解，请首先阅读我们提供的有关语言技术平台的文档。
+在本文档的后续中，我们假定您已经阅读并成功编译并使用语言技术平台。
+
+# 安装
+
+## 编译ltp4j.jar
+
+### 命令行方式
+
 ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目根目录下使用
 
-    ant
+```
+ant
+```
+命令编译。编译成功后，将在`build_jar/jar`下产生`ltp4j.jar`文件。
 
-命令直接编译。 编译成功后，将在build_jar/jar下产生tp4j.jar。
+### Eclipse
 
-如果使用Eclipse，可以按照"File > New > Project... > Java Project from Existing Ant Buildfile"的方式从build.xml中创建项目。 选择next后，在Ant buildfile:一栏中
+如果使用Eclipse，可以按照_"File > New > Project... > Java Project from Existing Ant Buildfile"_的方式从build.xml中创建项目。 选择next后，在Ant buildfile:一栏中
 填入build.xml的路径。 这里假设项目路径为F:\JNI\ltp4j, build.xml的路径就是E:\JNI\ltp4j\build.xml。
 
 
@@ -34,13 +54,12 @@ ltp4j.jar使用ant编译工具编译。 在命令行环境下，可以在项目�
 
 填好后执行run，build/jar下产生名为ltp4j.jar的jar文件。
 
-##编译C++代理程序
+## 编译C++代理程序
 
+代理程序jni动态库依赖于ltp的动态库，所以在编译jni之前必须在本地安装了ltp，[LTP使用文档v3.0](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md)详细介绍了ltp。
+如果你之前对ltp不太了解，建议通篇阅读一下，如果对ltp比较熟悉，可以直接看“开始使用LTP”部分来安装ltp。
 
-代理程序jni动态库依赖于ltp的动态库，所以在编译jni之前必须在本地安装了ltp，[LTP使用文档v3.0](https://github.com/HIT-SCIR/ltp/blob/master/doc/ltp-document-3.0.md)详细介绍了ltp，如果你之前对ltp不太了解，建议通篇阅读一下，如果对ltp比较熟悉，可以直接看“开始使用LTP”部分来安装ltp。
-
-
-###安装CMake
+### 安装CMake
 jni程序使用编译工具CMake构建项目。在安装jni之前，你需要首先安装CMake。CMake的网站在[这里](http://www.cmake.org)。如果你是Windows用户，请下载CMake的二进制安装包；
 如果你是Linux，Mac OS或Cygwin的用户，可以通过编译源码的方式安装CMake，当然，你也可以使用Linux的软件源来安装。
 
@@ -59,17 +78,19 @@ jni程序使用编译工具CMake构建项目。在安装jni之前，你需要首
 
 或者在命令行build 路径下运行
 
-        cmake ..
+```
+cmake ..
+```
 
 第二步：编译
 
 ### Linux，Mac OSX和Cygwin编译
 Linux、Mac OSX(*)和Cygwin的用户，可以直接在项目根目录下使用命令
 
-
-        cmake .
-        make
-
+```
+cmake .
+make
+```
 
 进行编译。
 
