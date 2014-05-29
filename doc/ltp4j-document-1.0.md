@@ -353,6 +353,7 @@ edu.ir.hit.ltp4j.NER
 |-------|----------|
 |java.util.List< String > words | 待识别的词序列 |
 |java.util.List< String > postags | 待识别的词的词性序列 |
+|java.util.List< String > tags | 命名实体识别结果，命名实体识别的结果为O时表示这个词不是命名实体，否则为{POS}-{TYPE}形式的标记，POS代表这个词在命名实体中的位置，TYPE表示命名实体类型 |
 
 返回值：
 
@@ -366,7 +367,7 @@ edu.ir.hit.ltp4j.NER
     public class TestNer {
 
      public static void main(String[] args) {
-      if(NER.nercreate("../../../ltp_data/ner.model")<0) {
+      if(NER.create("../../../ltp_data/ner.model")<0) {
        System.err.println("load failed");
         return;          
       }
@@ -453,33 +454,36 @@ edu.ir.hit.ltp4j.Parser
     import edu.hit.ir.ltp4j.*;
 
 
-    public static void main(String[] args) {
-     if(ParserJNI.parsercreate("../../../ltp_data/parser.model")<0) {
-      System.err.println("load failed");
-      return;
-     }
-      List<String> words = new ArrayList<String>();
-      List<String> tags = new ArrayList<String>();
-      words.add("一把手");tags.add("n");
-      words.add("亲自");tags.add("d");
-     words.add("过问");tags.add("v");
-     words.add("。");tags.add("wp");
-      List<Integer> heads = new ArrayList<Integer>();
-      List<String> deprels = new ArrayList<String>();
+    public class TestParser {
 
-      int size = Parser.parse(words,tags,heads,deprels);
-
-      for(int i = 0;i<size;i++) {
-        System.out.print(heads.get(i)+":"+deprels.get(i));
-       if(i==size-1) {
-          System.out.println();
-       }
-        else{
-          System.out.print("        ");
+      public static void main(String[] args) {
+        if(Parser.create("../../../ltp_data/parser.model")<0) {
+          System.err.println("load failed");
+          return;
         }
-      }
+        List<String> words = new ArrayList<String>();
+        List<String> tags = new ArrayList<String>();
+        words.add("一把手");tags.add("n");
+        words.add("亲自");tags.add("d");
+        words.add("过问");tags.add("v");
+        words.add("。");tags.add("wp");
+        List<Integer> heads = new ArrayList<Integer>();
+        List<String> deprels = new ArrayList<String>();
 
-      Parser.release();
+        int size = Parser.parse(words,tags,heads,deprels);
+
+        for(int i = 0;i<size;i++) {
+          System.out.print(heads.get(i)+":"+deprels.get(i));
+          if(i==size-1) {
+            System.out.println();
+          }
+          else{
+            System.out.print("        ");
+          }
+        }
+
+        Parser.release();
+      }
     }
 
 
@@ -543,42 +547,45 @@ edu.ir.hit.ltp4j.SRL
     import java.util.ArrayList;
     import java.util.List;
     import edu.hit.ir.ltp4j.*;
-      public static void main(String[] args) {
-        SRL.create("../../../ltp_data/srl");
-        ArrayList<String> words = new ArrayList<String>();
-        words.add("一把手");
-        words.add("亲自");
-        words.add("过问");
-        words.add("。");
-        ArrayList<String> tags = new ArrayList<String>();
-        tags.add("n");
-        tags.add("d");
-        tags.add("v");
-        tags.add("wp");
-        ArrayList<String> ners = new ArrayList<String>();
-        ners.add("O");
-        ners.add("O");
-        ners.add("O");
-        ners.add("O");
-        ArrayList<Integer> heads = new ArrayList<Integer>();
-        heads.add(2);
-        heads.add(2);
-        heads.add(-1);
-        heads.add(2);
-        ArrayList<String> deprels = new ArrayList<String>();
-        deprels.add("SBV");
-        deprels.add("ADV");
-        deprels.add("HED");
-        deprels.add("WP");
-        List<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>> srls = new ArrayList<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>>();
+
+    public class TestSrl {
+
+    public static void main(String[] args) {
+      SRL.create("../../../ltp_data/srl");
+      ArrayList<String> words = new ArrayList<String>();
+      words.add("一把手");
+      words.add("亲自");
+      words.add("过问");
+      words.add("。");
+      ArrayList<String> tags = new ArrayList<String>();
+      tags.add("n");
+      tags.add("d");
+      tags.add("v");
+      tags.add("wp");
+      ArrayList<String> ners = new ArrayList<String>();
+      ners.add("O");
+      ners.add("O");
+      ners.add("O");
+      ners.add("O");
+      ArrayList<Integer> heads = new ArrayList<Integer>();
+      heads.add(2);
+      heads.add(2);
+      heads.add(-1);
+      heads.add(2);
+      ArrayList<String> deprels = new ArrayList<String>();
+      deprels.add("SBV");
+      deprels.add("ADV");
+      deprels.add("HED");
+      deprels.add("WP");
+      List<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>> srls = new ArrayList<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>>();
         SRL.srl(words, tags, ners, heads, deprels, srls);
-        for (int i = 0; i < srls.size(); ++i) {
-          System.out.println(srls.get(i).first + ":");
-            for (int j = 0; j < srls.get(i).second.size(); ++j) {
-              System.out.println("   tpye = "+ srls.get(i).second.get(j).first + " beg = "+ srls.get(i).second.get(j).second.first + " end = "+ srls.get(i).second.get(j).second.second);
-            }
+      for (int i = 0; i < srls.size(); ++i) {
+        System.out.println(srls.get(i).first + ":");
+          for (int j = 0; j < srls.get(i).second.size(); ++j) {
+            System.out.println("   tpye = "+ srls.get(i).second.get(j).first + " beg = "+ srls.get(i).second.get(j).second.first + " end = "+ srls.get(i).second.get(j).second.second);
+          }
         }
-        SRL.release();
+      SRL.release();
       }
 
     }
