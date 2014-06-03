@@ -6,11 +6,11 @@ import edu.hit.ir.ltp4j.*;
 
 public class Test {
   public static void init(){
-    Segment.create("../ltp_data/cws.model");
-    Postag.create("../ltp_data/pos.model");
-    Ner.create("../ltp_data/ner.model");
+    Segmentor.create("../ltp_data/cws.model");
+    Postagger.create("../ltp_data/pos.model");
+    NER.create("../ltp_data/ner.model");
     Parser.create("../ltp_data/parser.model");
-    Srl.create("../ltp_data/srl");
+    SRL.create("../ltp_data/srl");
   }
 
   public static void ltp(String sent){
@@ -28,7 +28,7 @@ public class Test {
       List<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>> srls = 
         new ArrayList<Pair<Integer, List<Pair<String, Pair<Integer, Integer>>>>>();
 
-      Segment.segment(sents.get(m),words);
+      Segmentor.segment(sents.get(m),words);
       int size = words.size();
       System.out.println("words:"+size);
       for(int i = 0;i<size;i++) {
@@ -41,7 +41,7 @@ public class Test {
         }
       }
 
-      Postag.postag(words,postags);
+      Postagger.postag(words,postags);
       size = postags.size();
       System.out.println("postags:"+size);
       for(int i = 0;i<size;i++) {
@@ -55,7 +55,7 @@ public class Test {
       }
 
 
-      Ner.recognize(words,postags,ners);
+      NER.recognize(words,postags,ners);
       size = postags.size();
       System.out.println("ners:"+size);
       for(int i = 0;i<size;i++) {
@@ -85,7 +85,7 @@ public class Test {
         heads.set(i,heads.get(i)-1);
       }
 
-      Srl.srl(words,postags,ners,heads,deprels,srls);
+      SRL.srl(words,postags,ners,heads,deprels,srls);
       size = srls.size();
       System.out.println("srl:"+size);
       for (int i = 0; i < srls.size(); i++) {
@@ -99,11 +99,11 @@ public class Test {
     }
   }
   public static void release(){
-    Segment.release();
-    Postag.release();
-    Ner.release();
+    Segmentor.release();
+    Postagger.release();
+    NER.release();
     Parser.release();
-    Srl.release();
+    SRL.release();
   }
 
 public static void main(String[] args) {
